@@ -1,16 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const PORT = 4000;
-const DBURI = `mongodb://3.248.205.118:27017/todos`;
+const PORT = 5000;
+const DBURI = `mongodb://34.241.102.37:27017/todos`;
 const DB = mongoose.connection;
 const allTodos = require('./routes/allTodos');
 const singleTodo = require('./routes/singleTodo');
 const addTodo = require('./routes/addTodo');
-
-app.use('/add', addTodo);
-app.use('/todo', singleTodo);
-app.use('/', allTodos);
 
 // This code deals with the CORS issue
 app.use(function(req, res, next) {
@@ -18,6 +14,10 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+app.use('/add', addTodo);
+app.use('/todo', singleTodo);
+app.use('/', allTodos);
 
 mongoose.connect(DBURI, { useNewUrlParser: true }, error => {
     error ? console.log(`Unable to connect to DB due to: ${error}`) : console.log(`Connection to MongoDB successful`);
